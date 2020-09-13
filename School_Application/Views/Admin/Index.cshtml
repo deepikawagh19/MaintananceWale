@@ -1,0 +1,58 @@
+﻿
+@model IEnumerable<School_Application.Models.StudentDetail>
+@{
+
+    if (Session["userId"] == null)
+    {
+        Response.Redirect("~/Login/Index");
+    }
+}
+
+<h2>Students Information</h2>
+@Html.ActionLink("Create New", "AddStudent")
+<br/>
+@Html.ActionLink("Students List", "ShowStudent")
+
+
+
+
+@using (Html.BeginForm("Index", "Admin", FormMethod.Get))
+{
+    <p>
+        Search Name: @Html.TextBox("Search_Data", ViewBag.FilterValue as string)
+        <input type="submit" value="Find" />
+    </p>
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink(" Name", "Index", new { Sorting_Order = ViewBag.SortingName, Filter_Value = ViewBag.FilterValue })
+        </th>
+    
+        <th>
+            @Html.ActionLink("Date", "Index", new { Sorting_Order = ViewBag.SortingDate, Filter_Value = ViewBag.FilterValue })
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentName)
+            </td>
+         
+            <td>
+                @Html.DisplayFor(modelItem => item.BirthDate)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.StudentId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.StudentId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.StudentId })
+            </td>
+        </tr>
+    }
+
+</table>
+<br />
